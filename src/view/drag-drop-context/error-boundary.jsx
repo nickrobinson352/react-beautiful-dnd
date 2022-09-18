@@ -49,13 +49,17 @@ export default class ErrorBoundary extends React.Component<Props> {
 
   onWindowError = (event: ErrorEvent) => {
     const callbacks: AppCallbacks = this.getCallbacks();
-
-    if (callbacks.isDragging()) {
-      callbacks.tryAbort();
-      warning(`
-        An error was caught by our window 'error' event listener while a drag was occurring.
-        The active drag has been aborted.
-      `);
+     console.log(event.message)
+     if (callbacks.isDragging()) {
+      if (event.message.includes('ResizeObserver loop limit exceeded')) {
+        console.log(event.message)
+      } else {
+        callbacks.tryAbort();
+        warning(`
+          An error was caught by our window 'error' event listener while a drag was occurring.
+          The active drag has been aborted.
+          `);
+      }
     }
 
     const err: ?Error = event.error;
